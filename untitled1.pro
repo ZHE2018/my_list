@@ -16,7 +16,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    list.cpp
+    list.cpp \
+    graph.cpp \
+    graph_l.cpp
 
 HEADERS += \
-    list.h
+    list.h \
+    graph.h \
+    graph_l.h

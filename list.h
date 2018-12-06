@@ -73,6 +73,12 @@ public:
         n->_next=ptr;
         this->_size++;
     }
+    void push_frout(const T * dataPtr){
+        node * ptr=n->_next;
+        n=dataPtr;
+        n->_next=ptr;
+        this->_size++;
+    }
     void pop_front(){
         if(n==nullptr)
             return;
