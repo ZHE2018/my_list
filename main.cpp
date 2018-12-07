@@ -25,11 +25,12 @@ int main(int argc, char *argv[])
 
     g.insertEdge(1,3);
     g.insertEdge(1,7);
-    g.insertEdge(1,5);
+    g.insertEdge(1,5,2);
     g.insertEdge(5,7);
 
     for(auto i:g.neighbor(1)){cout<<i<<" ";}
     cout<<endl;
+    cout<<g.edgeValue(1,5)<<endl;
 
     qDebug()<<"ID:"<<argc<<"info:"<<*argv<<"\nfinish";
 }

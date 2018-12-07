@@ -5,11 +5,23 @@
 #include <QLinkedList>
 #include <QMap>
 
-#include <QDebug>
 //无向图，顶点可以指定KEY，key必须唯一
 template<typename KEY>
 class Graph_l
 {
+private:
+    struct Arc{
+        unsigned int arcNumber;
+        int vaule;
+        Arc(unsigned int arc,int vaule=1):arcNumber(arc),vaule(vaule){}
+        bool operator==(const Arc & b)const{
+            return b.arcNumber==arcNumber;
+        }
+        bool operator==(const unsigned int & b)const{return b==arcNumber;}
+        operator unsigned int(){
+            return arcNumber;
+        }
+    };
 public:
     Graph_l():nodeSize(0){}
     void insertVertex(const KEY & k){
@@ -18,10 +30,8 @@ public:
             return;
         key.insert(k,nodeSize);
         nodeSize++;
-        graph.append(QLinkedList<unsigned int>());
+        graph.append(QLinkedList<Arc>());
         this->vaule.append(k);
-
-        qDebug()<<"insert vertex:"<<k<<":"<<graph.size()-1;
     }
     void removeVertex(const KEY & k){
         if(key.find(k)==key.end())//节点不存在
@@ -42,7 +52,7 @@ public:
         vaule.removeOne(k);
         //删除节点
     }
-    void insertEdge(const KEY & start,const KEY & end){
+    void insertEdge(const KEY & start,const KEY & end,int vual=1){
         if(start==end)//无效边
             return;
         if(key.find(start)==key.end())
@@ -53,9 +63,8 @@ public:
 //            return;
         if(edge(start,end))//已经存在相同边
             return;
-        graph[*key.find(start)].append(*key.find(end));
-        graph[*key.find(end)].append(*key.find(start));
-        qDebug()<<"insert edge:"<<start<<":"<<end;
+        graph[*key.find(start)].append(Arc(*key.find(end),vual));
+        graph[*key.find(end)].append(Arc(*key.find(start),vual));
     }
     //生成一个邻接顶点的列表，顶点不存在则返回空表
     QVector<KEY> neighbor(const KEY &k)const{
@@ -70,14 +79,14 @@ public:
         return neig;
     }
     //迭代器避免了数据的复制，迭代器指向的是下标，而不是KEY,注意保证k的存在，否则将添加一个顶点;使用toKey()将下标翻译成KEY
-    QLinkedList<unsigned int>::const_iterator neighborBegin(const KEY & k)const{
+    typename QLinkedList<Arc>::const_iterator neighborBegin(const KEY & k)const{
         if(key.find(k)==key.end()){
             this->insertVertex(k);
         }
         return graph[*key.find(k)].begin();
     }
 
-    QLinkedList<unsigned int>::const_iterator neighborEnd(const KEY & k)const{
+    typename QLinkedList<Arc>::const_iterator neighborEnd(const KEY & k)const{
         if(key.find(k)==key.end()){
             this->insertVertex(k);
         }
@@ -109,8 +118,24 @@ public:
         }
         return has;//return false;
     }
+    int edgeValue(const KEY & start,const KEY & end)const{
+        if(start==end)
+            return 0;
+        if(key.find(start)==key.end()||key.find(end)==key.end())
+            return 0;
+        unsigned int a=* key.find(start);
+        unsigned int b=* key.find(end);
+        for(auto i:graph[a]){
+            if(i==b){
+                return i.vaule;
+                break;//return true;
+            }
+        }
+        return 0;
+    }
+
 private:
-    QVector<QLinkedList<unsigned int> > graph;//邻接链表
+    QVector<QLinkedList<Arc> > graph;//邻接链表
     unsigned int nodeSize;//顶点数量
     QMap<KEY,unsigned int> key;//由KEY查找对应顶点所在数组位置
     QVector<KEY> vaule;//不同顶点的KEY值
