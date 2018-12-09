@@ -55,6 +55,7 @@ public:
     void insertEdge(const KEY & start,const KEY & end,int vual=1){
         if(start==end)//无效边
             return;
+        //顶点不存在则添加顶点
         if(key.find(start)==key.end())
             insertVertex(start);
         if(key.find(end)==key.end())
@@ -118,7 +119,7 @@ public:
         }
         return has;//return false;
     }
-    int edgeValue(const KEY & start,const KEY & end)const{
+    int edgeVaule(const KEY & start,const KEY & end)const{
         if(start==end)
             return 0;
         if(key.find(start)==key.end()||key.find(end)==key.end())

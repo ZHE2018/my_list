@@ -37,7 +37,7 @@ private:
         bool operator==(const iterator &b)const{return b.p==this->p;}
         bool operator!=(const iterator &b)const{return b.p!=this->p;}
     };
-
+    //iterator 必须是合理的，由构造函数构造的iterator的行为将是未定义的！
 public:
     List(const T &data):n(new node(data)),_size(1),_end(nullptr){}
     List():n(nullptr),_size(0),_end(nullptr){}

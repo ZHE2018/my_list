@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
     for(auto i:g.neighbor(1)){cout<<i<<" ";}
     cout<<endl;
-    cout<<g.edgeValue(1,5)<<endl;
+    cout<<g.edgeVaule(1,3)<<endl;
 
     qDebug()<<"ID:"<<argc<<"info:"<<*argv<<"\nfinish";
 }
